@@ -1,0 +1,9 @@
+[project]
+name = "dawify" 
+version = "0.1"   
+dependencies = [
+    "demucs"
+]
+
+[tool.setuptools.packages.find]
+include = ["dawify"]
