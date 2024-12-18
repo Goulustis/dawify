@@ -2,3 +2,4 @@ assets/*
 outputs/*
 *.th
 dawify.egg-info/*
+*.pyc
