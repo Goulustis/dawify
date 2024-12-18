@@ -2,10 +2,8 @@ from dataclasses import dataclass
 import yaml
 from pathlib import Path
 from typing import Any, Tuple, Type
-import rich
 
-CONSOLE = rich.get_console()
-
+from dawify.mis_utils import rprint
 
 ## base classes taken from nerfstudio
 
@@ -41,7 +39,7 @@ class InstantiateConfig(PrintableConfig):
         """Save the config to a YAML file."""
         with open(filename, 'w') as f:
             yaml.dump(self, f)
-        CONSOLE.print(f"[yellow]config saved to: {filename}[/yellow]")
+        rprint(f"[yellow]config saved to: {filename}[/yellow]")
 
 def load_config(filename: str, inp_conf = None) -> InstantiateConfig:
     """load and overwrite config from file"""
