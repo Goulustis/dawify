@@ -2,7 +2,8 @@
 name = "dawify" 
 version = "0.1"   
 dependencies = [
-    "demucs"
+    "demucs",
+    "tyro",
     "torch==2.1.2+cu118",
     "torchvision==0.16.2+cu118"
 ]
