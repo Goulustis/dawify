@@ -3,7 +3,12 @@ name = "dawify"
 version = "0.1"   
 dependencies = [
     "demucs"
+    "torch==2.1.2+cu118",
+    "torchvision==0.16.2+cu118"
 ]
+
+[tool.pip]
+extra-index-url = "https://download.pytorch.org/whl/cu118"
 
 [tool.setuptools.packages.find]
 include = ["dawify"]
