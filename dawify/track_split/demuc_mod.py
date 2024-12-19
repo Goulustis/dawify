@@ -4,6 +4,7 @@ import os
 import os.path as osp
 import demucs
 import torch
+import glob
 
 from dawify.config import InstantiateConfig
 from dawify.mis_utils import rprint
@@ -37,3 +38,6 @@ class DemucMod:
 
         rprint(f"[yellow]Separating {osp.basename(inp_f)}, saving to {self.curr_save_dir}[/yellow]")
         demucs.separate.main([inp_f, "-n", self.model_name, "-j" , "4", self.curr_save_dir])
+    
+    def get_out_fs(self):
+        return sorted(glob.glob(osp.join(self.curr_save_dir, "*.wav")))
