@@ -3,8 +3,8 @@ from dataclasses import dataclass, field
 from typing import Type
 
 from dawify.config import InstantiateConfig
-from dawify.track_split.demuc_mod import DemucModConfig
-from dawify.midify.mt3 import MT3Config
+from dawify.track_split.demuc_mod import DemucModConfig, DemucMod
+from dawify.midify.mt3 import MT3Config, MT3_Mod
 
 @tyro.conf.configure(tyro.conf.SuppressFixed)
 @dataclass
@@ -18,8 +18,8 @@ class PipelineConfig(InstantiateConfig):
 class Pipeline:
     def __init__(self, config: PipelineConfig):
         self.config = config
-        self.demuc_mod = config.demuc_config.setup()
-        self.midify_mod = config.mt3_config.setup()
+        self.demuc_mod: DemucMod = config.demuc_config.setup()
+        self.midify_mod: MT3_Mod = config.mt3_config.setup()
 
     def run(self, inp_f:str):
         """
@@ -27,5 +27,5 @@ class Pipeline:
         """
         self.demuc_mod.seperate(inp_f)
 
-    def __call__(self):
-        self.run()
+        for out_f in self.demuc_mod.get_out_fs():
+            self.midify_mod.convert(out_f)
