@@ -11,4 +11,4 @@ bash setup.sh
 ```
 
 # How to run
-For example of how to run see dawify/run.py
+For example of how to run see `dawify/run.py`
