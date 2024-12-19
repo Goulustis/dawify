@@ -4,6 +4,7 @@ from typing import Type
 
 from dawify.config import InstantiateConfig
 from dawify.track_split.demuc_mod import DemucModConfig
+from dawify.midify.mt3 import MT3Config
 
 @tyro.conf.configure(tyro.conf.SuppressFixed)
 @dataclass
@@ -12,11 +13,13 @@ class PipelineConfig(InstantiateConfig):
 
     demuc_config: DemucModConfig = field(default_factory=DemucModConfig)
 
+    mt3_config: MT3Config = field(default_factory=MT3Config)
 
 class Pipeline:
     def __init__(self, config: PipelineConfig):
         self.config = config
         self.demuc_mod = config.demuc_config.setup()
+        self.midify_mod = config.mt3_config.setup()
 
     def run(self, inp_f:str):
         """
