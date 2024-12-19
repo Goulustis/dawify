@@ -23,12 +23,16 @@ class DemucMod:
         self.config = config
         self.model_name = config.model_name
         self.out_dir = osp.join(config.out_dir, self.model_name)
+        self.curr_save_dir = None
 
         os.makedirs(self.out_dir, exist_ok=True)
         rprint(f"[green]Saved to: {self.out_dir}[/green]")
 
 
     def seperate(self, inp_f:str):
-        rprint(f"[yellow]Separating {osp.basename(inp_f)}[/yellow]")
-        demucs.separate.main([inp_f, "-n", self.model_name, "-j" , "4", self.out_dir])
+        file_name = osp.splitext(osp.basename(inp_f))[0]
+        self.curr_save_dir = osp.join(self.out_dir, file_name)
+        os.makedirs(self.curr_save_dir, exist_ok=True)
 
+        rprint(f"[yellow]Separating {osp.basename(inp_f)}, saving to {self.curr_save_dir}[/yellow]")
+        demucs.separate.main([inp_f, "-n", self.model_name, "-j" , "4", self.curr_save_dir])
