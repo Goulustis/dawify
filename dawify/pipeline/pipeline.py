@@ -21,7 +21,7 @@ class Pipeline:
         self.demuc_mod: DemucMod = config.demuc_config.setup()
         self.midify_mod: MT3_Mod = config.mt3_config.setup()
 
-    def run(self, inp_f:str):
+    def process(self, inp_f:str):
         """
         inp_f (str): path to mp3 file
         """
