@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## THIS INSTALL MT3
+## install MT3; DO NOT CHANGE INSTALL_DIR!!
 INSTALL_DIR="dawify/third_party/amt"
 mkdir -p "$INSTALL_DIR"
 
