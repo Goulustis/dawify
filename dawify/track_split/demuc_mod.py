@@ -3,6 +3,7 @@ from typing import Type, Literal
 import os
 import os.path as osp
 import demucs
+import torch
 
 from dawify.config import InstantiateConfig
 from dawify.mis_utils import rprint
@@ -28,7 +29,7 @@ class DemucMod:
         os.makedirs(self.out_dir, exist_ok=True)
         rprint(f"[green]Saved to: {self.out_dir}[/green]")
 
-
+    @torch.no_grad()
     def seperate(self, inp_f:str):
         file_name = osp.splitext(osp.basename(inp_f))[0]
         self.curr_save_dir = osp.join(self.out_dir, file_name)

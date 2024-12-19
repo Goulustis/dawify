@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Type, Literal
+import torch
 
 from dawify.config import InstantiateConfig
 from dawify.midify.mt3_utils import load_model, process_audio
@@ -19,6 +20,7 @@ class MT3_Mod:
         self.config = config
         self.model = load_model(config.model_names, config.precision)
     
+    @torch.no_grad()
     def convert(self, inp_f: str):
         """
         inp_f (str): either a mp3 or wav file
