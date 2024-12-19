@@ -5,7 +5,7 @@ dependencies = [
     "demucs",
     "tyro",
     "awscli",
-    "transformers==4.45.1"
+    "transformers==4.45.1",
 ]
 
 [tool.setuptools.packages.find]
