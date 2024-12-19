@@ -3,7 +3,9 @@ name = "dawify"
 version = "0.1"   
 dependencies = [
     "demucs",
-    "tyro"
+    "tyro",
+    "awscli",
+    "transformers==4.45.1"
 ]
 
 [tool.setuptools.packages.find]
