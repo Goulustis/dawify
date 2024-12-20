@@ -26,6 +26,4 @@ class Pipeline:
         inp_f (str): path to mp3 file
         """
         self.demuc_mod.seperate(inp_f)
-
-        for out_f in self.demuc_mod.get_out_fs():
-            self.midify_mod.convert(out_f)
+        self.midify_mod.conv_list(self.demuc_mod.get_out_fs())
