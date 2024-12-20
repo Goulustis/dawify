@@ -6,14 +6,14 @@ import demucs
 import torch
 import glob
 
-from dawify.config import InstantiateConfig
+from dawify.dw_config import InstantiateConfig
 from dawify.mis_utils import rprint
 
 @dataclass
 class DemucModConfig(InstantiateConfig):
     _target: Type = field(default_factory=lambda: DemucMod)
 
-    out_dir: str = "output"
+    out_dir: str = "output/demuc"
     """directory to save the results"""
 
     model_name: Literal["hdemucs_mmi", "htdemucs", "htdemucs_6s", "htdemucs_ft", "mdx", "mdx_extra", "mdx_extra_q", "mdx_q", "repro_mdx_a", "repro_mdx_a_hybrid_only", "repro_mdx_a_time_only"] = "htdemucs"

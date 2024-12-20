@@ -11,7 +11,7 @@ def main():
     )
 
     pipeline:Pipeline = config.setup()
-    pipeline.process("path/to/mp3")
+    pipeline.process("assets/All the Way North.mp3")
 
 if __name__ == "__main__":
     main()

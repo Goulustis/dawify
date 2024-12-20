@@ -2,7 +2,7 @@ import tyro
 from dataclasses import dataclass, field
 from typing import Type
 
-from dawify.config import InstantiateConfig
+from dawify.dw_config import InstantiateConfig
 from dawify.track_split.demuc_mod import DemucModConfig, DemucMod
 from dawify.midify.mt3 import MT3Config, MT3_Mod
 
