@@ -14,7 +14,7 @@ from dawify.mis_utils import rprint
 class DemucModConfig(InstantiateConfig):
     _target: Type = field(default_factory=lambda: DemucMod)
 
-    out_dir: str = "output/demuc"
+    out_dir: str = "outputs/demuc"
     """directory to save the results"""
 
     model_name: Literal["hdemucs_mmi", "htdemucs", "htdemucs_6s", "htdemucs_ft", "mdx", "mdx_extra", "mdx_extra_q", "mdx_q", "repro_mdx_a", "repro_mdx_a_hybrid_only", "repro_mdx_a_time_only"] = "htdemucs"

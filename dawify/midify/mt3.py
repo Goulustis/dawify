@@ -10,7 +10,7 @@ from dawify.midify.mt3_utils import load_model, process_audio
 class MT3Config(InstantiateConfig):
     _target: Type = field(default_factory=lambda: MT3_Mod)
 
-    out_dir: str = "output/mt3"
+    out_dir: str = "outputs/mt3"
 
     model_name: Literal["YMT3+", "YPTF+Single (noPS)", "YPTF+Multi (PS)", "YPTF.MoE+Multi (noPS)", "YPTF.MoE+Multi (PS)"] = "YMT3+"
     """model used for transcribing music -> midi"""
