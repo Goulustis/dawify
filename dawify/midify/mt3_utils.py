@@ -235,7 +235,7 @@ def load_model_checkpoint(args=None):
     return model.eval()
 
 
-def transcribe(model, audio_info):
+def transcribe(model, audio_info, out_dir="outputs/mt3"):
     t = Timer()
 
     # Converting Audio
@@ -270,10 +270,10 @@ def transcribe(model, audio_info):
     pred_notes = mix_notes(pred_notes_in_file)  # This is the mixed notes from all channels
 
     # Write MIDI
-    write_model_output_as_midi(pred_notes, '/content/',
-                              audio_info['track_name'], model.midi_output_inverse_vocab)
-    t.stop(); t.print_elapsed_time("post processing");
-    midifile =  os.path.join('/content/model_output/', audio_info['track_name']  + '.mid')
+    write_model_output_as_midi(pred_notes, out_dir,
+                              audio_info['track_name'], model.midi_output_inverse_vocab, output_dir_suffix="..")
+    t.stop(); t.print_elapsed_time("post processing")
+    midifile =  os.path.join(out_dir, audio_info['track_name']  + '.mid')
     assert os.path.exists(midifile)
     return midifile
 
@@ -335,11 +335,11 @@ def prepare_media(source_path_or_url: os.PathLike) -> Dict:
         }
 
 
-def process_audio(model, audio_filepath):
+def process_audio(model, audio_filepath, out_dir="outputs/mt3"):
     if audio_filepath is None:
         return None
-    audio_info = prepare_media(audio_filepath, source_type='audio_filepath')
-    midifile = transcribe(model, audio_info)
+    audio_info = prepare_media(audio_filepath)
+    midifile = transcribe(model, audio_info, out_dir)
     return midifile
     # midifile = to_data_url(midifile)
     # return create_html_from_midi(midifile) # html midiplayer
