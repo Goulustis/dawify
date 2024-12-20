@@ -25,7 +25,7 @@ class DemucMod:
     def __init__(self, config: DemucModConfig):
         self.config = config
         self.model_name = config.model_name
-        self.out_dir = osp.join(config.out_dir, self.model_name)
+        self.out_dir = config.out_dir
         self.curr_save_dir = None
 
         os.makedirs(self.out_dir, exist_ok=True)
@@ -34,11 +34,12 @@ class DemucMod:
     @torch.no_grad()
     def seperate(self, inp_f:str):
         file_name = osp.splitext(osp.basename(inp_f))[0]
-        self.curr_save_dir = osp.join(self.out_dir, file_name)
+        self.curr_save_dir = osp.join(self.out_dir, self.model_name, file_name)
         os.makedirs(self.curr_save_dir, exist_ok=True)
 
         rprint(f"[yellow]Separating {osp.basename(inp_f)}, saving to {self.curr_save_dir}[/yellow]")
-        demucs.separate.main(shlex.split(f'"{inp_f}" -n htdemucs -j 4 --out "{self.curr_save_dir}"'))
+        # NOTE: demucs will save to self.out_dir/model_name/track_name
+        demucs.separate.main(shlex.split(f'"{inp_f}" -n htdemucs -j 4 --out "{self.out_dir}"'))
     
     def get_out_fs(self):
         return sorted(glob.glob(osp.join(self.curr_save_dir, "*.wav")))
