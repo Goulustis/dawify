@@ -32,6 +32,9 @@ class MT3_Mod:
     def convert(self, inp_f: str):
         """
         inp_f (str): either a mp3 or wav file
+
+        returns:
+        str: path to the output midi file
         """
         out_dir = osp.join(self.out_dir, osp.basename(osp.dirname(inp_f)))
         
