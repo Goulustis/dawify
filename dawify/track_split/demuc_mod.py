@@ -28,7 +28,7 @@ class DemucMod:
         self.curr_save_dir = None
 
         os.makedirs(self.out_dir, exist_ok=True)
-        rprint(f"[green]Saved to: {self.out_dir}[/green]")
+        rprint(f"[green]Saving demucs to: {self.out_dir}[/green]")
 
     @torch.no_grad()
     def seperate(self, inp_f:str):
