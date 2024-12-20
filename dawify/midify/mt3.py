@@ -2,9 +2,11 @@ from dataclasses import dataclass, field
 from typing import Type, Literal, List
 import torch
 import os
+import os.path as osp
 
 from dawify.dw_config import InstantiateConfig
 from dawify.midify.mt3_utils import load_model, process_audio
+from dawify.mis_utils import rprint
 
 @dataclass
 class MT3Config(InstantiateConfig):
@@ -31,7 +33,13 @@ class MT3_Mod:
         """
         inp_f (str): either a mp3 or wav file
         """
-        midi_file = process_audio(self.model, inp_f)
+        out_dir = osp.join(self.out_dir, osp.basename(osp.dirname(inp_f)))
+        
+        file_name = osp.splitext(osp.basename(inp_f))[0]
+        pr_name = "/".join(inp_f.split("/")[-2:])
+        rprint(f"[yellow]{pr_name} midified to {osp.join(out_dir, file_name)}.mid [/yellow]")
+
+        midi_file = process_audio(self.model, inp_f, out_dir)
 
         return midi_file
     
