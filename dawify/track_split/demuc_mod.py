@@ -2,9 +2,10 @@ from dataclasses import dataclass, field
 from typing import Type, Literal
 import os
 import os.path as osp
-import demucs
+import demucs.separate
 import torch
 import glob
+import shlex
 
 from dawify.dw_config import InstantiateConfig
 from dawify.mis_utils import rprint
@@ -37,7 +38,7 @@ class DemucMod:
         os.makedirs(self.curr_save_dir, exist_ok=True)
 
         rprint(f"[yellow]Separating {osp.basename(inp_f)}, saving to {self.curr_save_dir}[/yellow]")
-        demucs.separate.main([inp_f, "-n", self.model_name, "-j" , "4", self.curr_save_dir])
+        demucs.separate.main(shlex.split(f'"{inp_f}" -n htdemucs -j 4 --out "{self.curr_save_dir}"'))
     
     def get_out_fs(self):
         return sorted(glob.glob(osp.join(self.curr_save_dir, "*.wav")))
