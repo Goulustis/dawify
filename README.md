@@ -10,5 +10,11 @@ python -m pip install .
 bash setup.sh
 ```
 
-# How to run
-For example of how to run see `dawify/run.py`
+# Usage
+```bash
+# run under the project root directory:
+# NOTE: modify the parameter in run.py before hand if using it as a script
+python dawify/run.py
+
+# results are saved under outputs
+```
