@@ -28,4 +28,4 @@ def main_script():
 
 if __name__ == "__main__":
     main_script()       # Run this script with `python dawify/run.py`
-    tyro.cli(main_cli)    # Run this script with `python dawify/run.py --help`
+    # tyro.cli(main_cli)    # Run this script with `python dawify/run.py --help`
