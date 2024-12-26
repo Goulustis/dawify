@@ -14,7 +14,7 @@ from dawify.mis_utils import rprint
 class DemucModConfig(InstantiateConfig):
     _target: Type = field(default_factory=lambda: DemucMod)
 
-    ignore_exist: bool = True
+    ignore_exist: bool = False
     """if true, will not process file that are altready processed"""
 
     out_dir: str = "outputs/demuc"
