@@ -1,0 +1,117 @@
+import numpy as np
+import scipy.signal as signal
+from pydub import AudioSegment
+from pydub.playback import play
+from pydub.effects import normalize
+import soundfile as sf
+
+def apply_equalizer(audio_data, sample_rate, target_freq, gain_db, q_factor=1):
+    """
+    Apply a parametric equalizer to boost the target frequency.
+
+    :param audio_data: Input audio data (numpy array)
+    :param sample_rate: Sampling rate of the audio
+    :param target_freq: Target frequency to boost (Hz)
+    :param gain_db: Gain in dB
+    :param q_factor: Quality factor (default 1)
+    :return: Equalized audio data
+    """
+    # Design the peak filter
+    b, a = signal.iirpeak(target_freq, q_factor, fs=sample_rate)
+    
+    # Apply the filter to the audio data
+    filtered_audio = signal.lfilter(b, a, audio_data)
+    
+    # Apply gain (convert dB gain to linear scale)
+    gain_linear = 10 ** (gain_db / 20)
+    equalized_audio = filtered_audio * gain_linear
+
+    return equalized_audio
+
+
+def apply_expander(audio_data, threshold, ratio):
+    """
+    Apply a simple expander to restore dynamics.
+
+    :param audio_data: Input audio data (numpy array)
+    :param threshold: Threshold in linear scale
+    :param ratio: Expansion ratio (e.g., 2.0 means signals below the threshold will be halved)
+    :return: Expanded audio data
+    """
+    def expander(x):
+        return x if abs(x) > threshold else x / ratio
+
+    expanded_audio = np.vectorize(expander)(audio_data)
+    return expanded_audio
+
+def normalize_audio(audio):
+    """
+    Normalize the audio to ensure peak amplitude is at maximum possible value.
+    
+    :param audio: Input audio data (numpy array)
+    :return: Normalized audio data
+    """
+    max_amplitude = np.max(np.abs(audio))
+    if max_amplitude > 0:
+        normalized_audio = audio / max_amplitude
+    else:
+        normalized_audio = audio
+    return normalized_audio
+
+def process_audio(input_file, output_file, eq_params, expander_params):
+    """
+    Process the input audio file by applying an equalizer and expander.
+
+    :param input_file: Path to the input audio file
+    :param output_file: Path to save the processed audio
+    :param eq_params: Dictionary containing equalizer parameters (e.g., {'freq': 8000, 'gain_db': 6, 'q_factor': 1})
+    :param expander_params: Dictionary containing expander parameters (e.g., {'threshold': 0.05, 'ratio': 2})
+    """
+    # Load audio
+    audio, sample_rate = sf.read(input_file)
+    if len(audio.shape) > 1:
+        audio = audio.mean(axis=1)  # Convert to mono if stereo
+
+    # Apply equalizer
+    audio = apply_equalizer(
+        audio,
+        sample_rate,
+        target_freq=eq_params['freq'],
+        gain_db=eq_params['gain_db'],
+        q_factor=eq_params.get('q_factor', 1)
+    )
+
+    # Apply expander
+    audio = apply_expander(
+        audio,
+        threshold=expander_params['threshold'],
+        ratio=expander_params['ratio']
+    )
+
+    # Normalize audio
+    audio = normalize_audio(audio)
+
+    # Save the processed audio
+    sf.write(output_file, audio, sample_rate)
+
+
+if __name__ == "__main__":
+    # Input and output files
+    input_audio_path = "drums.wav"
+    output_audio_path = "output_audio.wav"
+
+    # Equalizer parameters
+    equalizer_settings = {
+        'freq': 8000,      # Target frequency in Hz
+        'gain_db': 0,      # Gain in dB
+        'q_factor': 1      # Quality factor
+    }
+
+    # Expander parameters
+    expander_settings = {
+        'threshold': 0.05,  # Threshold in linear scale
+        'ratio': 1.5        # Expansion ratio
+    }
+
+    process_audio(input_audio_path, output_audio_path, equalizer_settings, expander_settings)
+    print(f"Processed audio saved to {output_audio_path}")
