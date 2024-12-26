@@ -25,3 +25,7 @@ python dawify/run.py
 ```bash
 python dawify/run.py -h
 ```
+
+# references
+[YourMT3](https://github.com/mimbres/YourMT3)  
+[demucs](https://github.com/facebookresearch/demucs)
