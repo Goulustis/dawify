@@ -6,8 +6,8 @@ from dawify.midify.mt3 import MT3Config
 def main_cli(config:PipelineConfig, inp_f:str):
     config = PipelineConfig(
         mt3_config=MT3Config(
-            model_name="YMT3+",
-            precision="16"
+            model_name="YPTF.MoE+Multi (noPS)",
+            precision="32"
         )
     )
 
@@ -18,13 +18,13 @@ def main_cli(config:PipelineConfig, inp_f:str):
 def main_script():
     config = PipelineConfig(
         mt3_config=MT3Config(
-            model_name="YMT3+",
-            precision="16"
+            model_name="YPTF.MoE+Multi (noPS)",
+            precision="32"
         )
     )
 
     pipeline:Pipeline = config.setup()
-    pipeline.process("assets/All the Way North.mp3")
+    pipeline.process("/home/kaiyolau2/Code/dawify/assets/stay With Me.mp3")
 
 if __name__ == "__main__":
     main_script()       # Run this script with `python dawify/run.py`
