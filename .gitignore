@@ -1,6 +1,6 @@
 assets/*
 outputs/*
-*.th
 dawify.egg-info/*
-*.pyc
 dawify/third_party/*
+*.wav
+*.pyc
