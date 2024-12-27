@@ -39,3 +39,6 @@ class Pipeline:
 
         # Step 3: Midify conversion
         self.midify_mod.conv_list(preprocessed_files)
+
+    def get_in_out_dirs(self):
+        return self.demuc_mod.curr_save_dir, self.midify_mod.curr_save_dir
