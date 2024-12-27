@@ -4,8 +4,7 @@ version = "0.1"
 dependencies = [
     "demucs",
     "tyro",
-    "awscli",
-    "fluidsynth"
+    "awscli"
 ]
 
 [tool.setuptools.packages.find]

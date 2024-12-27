@@ -12,7 +12,7 @@ python -m pip install -r requirements.txt
 conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
 
 # download FluidR3_GM soundfont; required for midi -> audio conversion
-ASSETS_DIR="./assets"
-mkdir -p "$ASSETS_DIR"
-wget -P "$ASSETS_DIR" https://keymusician01.s3.amazonaws.com/FluidR3_GM.zip
-unzip "$ASSETS_DIR/FluidR3_GM.zip" -d "$ASSETS_DIR"
+# ASSETS_DIR="./assets"
+# mkdir -p "$ASSETS_DIR"
+# wget -P "$ASSETS_DIR" https://keymusician01.s3.amazonaws.com/FluidR3_GM.zip
+# unzip "$ASSETS_DIR/FluidR3_GM.zip" -d "$ASSETS_DIR"
