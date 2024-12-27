@@ -5,7 +5,7 @@ dependencies = [
     "demucs",
     "tyro",
     "awscli",
-    "transformers==4.45.1",
+    "fluidsynth"
 ]
 
 [tool.setuptools.packages.find]
