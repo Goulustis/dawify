@@ -23,7 +23,7 @@ class Pipeline:
         self.config = config
         self.demuc_mod: DemucMod = config.demuc_config.setup()
         self.midify_mod: MT3_Mod = config.mt3_config.setup()
-        self.audio_processor: AudioPreProcessor = config.audio_preproc_config.setup()
+        self.audio_preprocessor: AudioPreProcessor = config.audio_preproc_config.setup()
 
     def process(self, inp_f: str):
         """
@@ -32,8 +32,10 @@ class Pipeline:
         # Step 1: Demuc separation
         self.demuc_mod.seperate(inp_f)
         separated_files = self.demuc_mod.get_out_fs()
+
         # Step 2: Process drums.wav through AudioPreProcessor
-        processed_files = self.audio_processor.process_drum_files(separated_files)
+        preprocessed_files = self.audio_preprocessor.process_drum_files(separated_files)
+        preprocessed_files = [e for e in separated_files if "drums" not in e] + preprocessed_files
 
         # Step 3: Midify conversion
-        self.midify_mod.conv_list(processed_files)
+        self.midify_mod.conv_list(preprocessed_files)
