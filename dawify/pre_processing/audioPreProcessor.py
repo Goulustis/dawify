@@ -3,6 +3,8 @@ import numpy as np
 import scipy.signal as signal
 import soundfile as sf
 from typing import Type
+import glob
+import os.path as osp
 
 from dawify.dw_config import InstantiateConfig
 from dataclasses import dataclass, field
@@ -36,6 +38,7 @@ class AudioPreProcessor:
         self.config = config
         self.eq_params = config.eq_params
         self.expander_params = config.expander_params
+        self.curr_save_dir = None
 
     def apply_equalizer(self, audio_data, sample_rate):
         """
@@ -116,3 +119,6 @@ class AudioPreProcessor:
             else:
                 processed_files.append(audio_file)
         return processed_files
+    
+    def get_out_fs(self):
+        return sorted(glob.glob(osp.join(self.curr_save_dir, "*.wav")))
