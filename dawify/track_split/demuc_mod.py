@@ -51,4 +51,4 @@ class DemucMod:
         demucs.separate.main(shlex.split(f'"{inp_f}" -n {self.model_name} -j 4 --out "{self.out_dir}"'))
     
     def get_out_fs(self):
-        return sorted(glob.glob(osp.join(self.curr_save_dir, "*.wav")))
+        return sorted(glob.glob(osp.join(self.curr_save_dir, "*.wav")))[::-1]
