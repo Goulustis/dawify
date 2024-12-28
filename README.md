@@ -27,5 +27,6 @@ python dawify/run.py -h
 ```
 
 # references
-[YourMT3](https://github.com/mimbres/YourMT3)  
+[YourMT3](https://github.com/mimbres/YourMT3) GPL2, need to replace in future
 [demucs](https://github.com/facebookresearch/demucs)
+[Apollo](https://github.com/JusperLee/Apollo) This is not commercial liscenece, replace in future
