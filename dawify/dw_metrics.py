@@ -49,11 +49,11 @@ def calculate_snr(original_wav, midi_path):
     return snr
 
 
-def print_metrics(metrics: dict):
+def print_metrics(metrics: dict, header: tuple = ("Metric", "Value")):
     table = Table(title="Backtest Metrics")
 
-    table.add_column("Music", justify="right", style="cyan", no_wrap=True)
-    table.add_column("Signal Noise Ratio", style="magenta")
+    table.add_column(header[0], justify="right", style="cyan", no_wrap=True)
+    table.add_column(header[1], style="magenta")
 
     for metric, value in metrics.items():
         table.add_row(metric, f"{value:.4f}")
@@ -77,8 +77,30 @@ def calculate_metrics(reconstructed_midi, ground_truth_audio):
     midi_true = pretty_midi.PrettyMIDI(ground_truth_audio)
     
     # Extract notes
-    recon_notes = [(note.start, note.end, note.pitch, note.velocity) for instrument in midi_recon.instruments for note in instrument.notes]
-    true_notes = [(note.start, note.end, note.pitch, note.velocity) for instrument in midi_true.instruments for note in instrument.notes]
+    # recon_notes = [(note.start, note.end, note.pitch, note.velocity) for instrument in midi_recon.instruments for note in instrument.notes]
+    # true_notes = [(note.start, note.end, note.pitch, note.velocity) for instrument in midi_true.instruments for note in instrument.notes]
+    
+    recon_notes = []
+    true_notes = []
+    missing_notes = []
+    for instrument in midi_recon.instruments:
+        for note in instrument.notes:
+            max_overlap = 0
+            best_match = None
+            for true_instrument in midi_true.instruments:
+                for true_note in true_instrument.notes:
+                    if true_note.start > note.end:
+                        break
+                    overlap = min(note.end, true_note.end) - max(note.start, true_note.start)
+                    if overlap > max_overlap:
+                        max_overlap = overlap
+                        best_match = true_note
+            if best_match:
+                recon_notes.append((note.start, note.end, note.pitch, note.velocity))
+                true_notes.append((best_match.start, best_match.end, best_match.pitch, best_match.velocity))
+            else:
+                missing_notes.append((best_match.start, best_match.end, best_match.pitch, best_match.velocity))
+
 
     # Convert to numpy arrays for comparison
     recon_notes = np.array(recon_notes)
@@ -102,7 +124,7 @@ def calculate_metrics(reconstructed_midi, ground_truth_audio):
     ref_pitches = true_notes[:, 2]
     est_pitches = recon_notes[:, 2]
     
-    _, _, FL_F1 = precision_recall_f1_overlap(ref_intervals, ref_pitches, est_intervals, est_pitches)
+    _, _, FL_F1, _ = precision_recall_f1_overlap(ref_intervals, ref_pitches, est_intervals, est_pitches)
     
     # Final Score (Weighted)
     Q = 0.3 * PA + 0.25 * OA + 0.2 * DA + 0.15 * VC + 0.1 * FL_F1
@@ -113,12 +135,13 @@ def calculate_metrics(reconstructed_midi, ground_truth_audio):
         "Duration Accuracy": DA,
         "Velocity Consistency": VC,
         "Frame-Level F1": FL_F1,
-        "Overall Score": Q
+        "Overall Score": Q,
+        "percent missing notes": len(missing_notes) / len(true_instrument.notes)  # NOTE: we should not have 0 missing
     }
 
 if __name__ == "__main__":
-    ori = "outputs/demuc/htdemucs_6s/full_tracks/bass.wav"
-    recon = "outputs/mt3/full_tracks/bass.mid"
+    ori = "/home/boss/projects/dawify/assets/sample_level1_audio/sample_level1_audio/sample_level1_guitar.mid"
+    recon = "/home/boss/projects/dawify/outputs/mt3/sample_level1/guitar.mid"
     # print(calculate_snr(ori, recon))
     # calc_and_print_snrs(osp.dirname(recon), osp.dirname(ori))
     print_metrics(calculate_metrics(recon, ori))
