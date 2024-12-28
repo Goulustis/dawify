@@ -25,6 +25,7 @@ class MT3_Mod:
         self.config = config
         self.out_dir = config.out_dir
         self.model = load_model(config.model_name, config.precision)
+        self.curr_save_dir = None
 
         os.makedirs(self.out_dir, exist_ok=True)
     
@@ -54,4 +55,5 @@ class MT3_Mod:
         for inp_f in inp_fs:
             midi_files.append(self.convert(inp_f))
         
+        self.curr_save_dir = osp.dirname(midi_files[0])
         return midi_files
