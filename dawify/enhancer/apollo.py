@@ -16,6 +16,12 @@ class ApolloConfig(InstantiateConfig):
     model_name:str = "apollo"
     f"""available models: {avail_models}"""
 
+    chunk_size:int = 10
+    """no idea what this is"""
+
+    overlap:int = 2
+    """no idea what this is"""
+
     out_dir:str = "outputs/apollo"
     """directory to save the results"""
 
@@ -39,7 +45,7 @@ class Apollo:
         out_wav = osp.join(self.curr_save_dir, file_name)
 
         rprint(f"[yellow]enhancing {file_name} to {out_wav}[/yellow]")
-        inference(input_wav, out_wav, self.model)
+        inference(input_wav, out_wav, self.model, chunk_size=self.config.chunk_size, overlap=self.config.overlap)
     
     def enhance_list(self, input_wavs: List[str]):
         for input_wav in input_wavs:
