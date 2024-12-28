@@ -2,7 +2,7 @@
 Turn any mp4 to DAW file (We'll focus on midi for now)
 
 # Install
-1. make a conda environment
+<span style="color:red">1. **make a conda environment**</span>  
 2. run the below
 ```bash
 # at the root project directory, run:
@@ -27,6 +27,6 @@ python dawify/run.py -h
 ```
 
 # references
-[YourMT3](https://github.com/mimbres/YourMT3) GPL2, need to replace in future
-[demucs](https://github.com/facebookresearch/demucs)
-[Apollo](https://github.com/JusperLee/Apollo) This is not commercial liscenece, replace in future
+[YourMT3](https://github.com/mimbres/YourMT3) GPL2, need to replace in future  
+[demucs](https://github.com/facebookresearch/demucs)  
+[Apollo](https://github.com/JusperLee/Apollo) This is not commercial liscenece, replace in future  
