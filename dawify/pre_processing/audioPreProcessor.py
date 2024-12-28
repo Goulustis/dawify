@@ -128,3 +128,5 @@ class AudioPreProcessor:
         piano_f = ...
 
         self.process_drum_files(drum_f)
+    def get_out_fs(self):
+        return sorted(glob.glob(osp.join(self.curr_save_dir, "*.wav")))
