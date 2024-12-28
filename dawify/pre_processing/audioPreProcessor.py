@@ -116,3 +116,12 @@ class AudioPreProcessor:
             else:
                 processed_files.append(audio_file)
         return processed_files
+    
+    def process(self, input_file):
+        """
+        Process the input audio file and save the processed output to a file.
+        """
+        drum_f = ...
+        piano_f = ...
+
+        self.process_drum_files(drum_f)

@@ -24,7 +24,7 @@ def main_script():
     )
 
     pipeline:Pipeline = config.setup()
-    pipeline.process("/home/kaiyolau2/Code/dawify/assets/stay With Me.mp3")
+    pipeline.process("/home/kaiyolau2/Code/dawify/assets/sample_level1.wav")
 
 if __name__ == "__main__":
     main_script()       # Run this script with `python dawify/run.py`
