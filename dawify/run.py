@@ -25,7 +25,7 @@ def main_script():
     )
 
     pipeline:Pipeline = config.setup()
-    pipeline.process("/home/kaiyolau2/Code/dawify/assets/stay With Me.mp3")
+    pipeline.process("/home/boss/projects/dawify/assets/secret_sample/full_tracks_mp3_128.mp3")
 
     # inp_dir, out_dir = pipeline.get_in_out_dirs()
     # calc_and_print_snrs(out_dir, inp_dir)

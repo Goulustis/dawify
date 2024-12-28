@@ -20,7 +20,7 @@ class DemucModConfig(InstantiateConfig):
     out_dir: str = "outputs/demuc"
     """directory to save the results"""
 
-    model_name: Literal["hdemucs_mmi", "htdemucs", "htdemucs_6s", "htdemucs_ft", "mdx", "mdx_extra", "mdx_extra_q", "mdx_q", "repro_mdx_a", "repro_mdx_a_hybrid_only", "repro_mdx_a_time_only"] = "htdemucs"
+    model_name: Literal["hdemucs_mmi", "htdemucs", "htdemucs_6s", "htdemucs_ft", "mdx", "mdx_extra", "mdx_extra_q", "mdx_q", "repro_mdx_a", "repro_mdx_a_hybrid_only", "repro_mdx_a_time_only"] = "htdemucs_6s"
     """model to use, see https://github.com/facebookresearch/demucs/tree/main/demucs/remote for details"""
 
 
