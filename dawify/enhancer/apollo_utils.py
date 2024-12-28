@@ -57,10 +57,6 @@ def dBgain(audio, volume_gain_dB):
     return gained_audio
 
 
-    
-    def get_overlap(self):
-        return self.config['model']['overlap']
-
 def inference(input_wav, output_wav, model, chunk_size=10, overlap=2):
     os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
