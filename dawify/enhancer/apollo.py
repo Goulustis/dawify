@@ -2,7 +2,8 @@ import os.path as osp
 import glob
 import os
 from dataclasses import dataclass, field
-from typing import Type, Literal, List
+from typing import Type, List
+import shutil
 
 from dawify.dw_config import InstantiateConfig
 from dawify.enhancer.apollo_utils import load_model, inference, MODEL_PATH
@@ -49,6 +50,11 @@ class Apollo:
     
     def enhance_list(self, input_wavs: List[str]):
         for input_wav in input_wavs:
+
+            # NOTE: ignore bass files
+            if "bass" in input_wav:
+                shutil.copy(input_wav, self.curr_save_dir)
+
             self.enhance(input_wav)
     
     def get_out_fs(self):
