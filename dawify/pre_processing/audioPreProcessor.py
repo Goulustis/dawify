@@ -120,5 +120,15 @@ class AudioPreProcessor:
                 processed_files.append(audio_file)
         return processed_files
     
+    # def process(self, input_file):
+    #     """
+    #     Process the input audio file and save the processed output to a file.
+    #     """
+    #     drum_f = ...
+    #     piano_f = ...
+
+    #     self.process_drum_files(drum_f)
+
+    
     def get_out_fs(self):
         return sorted(glob.glob(osp.join(self.curr_save_dir, "*.wav")))
