@@ -9,8 +9,6 @@ from ml_collections import ConfigDict
 import sys
 import os.path as osp
 
-from torch import nn
-
 
 apollo_dir = osp.abspath(osp.join(osp.dirname(__file__), "..", "third_party", "Apollo"))
 if apollo_dir not in sys.path:
