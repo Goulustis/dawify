@@ -44,11 +44,11 @@ class Pipeline:
         # separated_files = self.enhancer.get_out_fs()
 
         # Step 2: Process all splited audio through AudioPreProcessor
-        preprocessed_files = self.audio_preprocessor.process(separated_files)
+        # preprocessed_files = self.audio_preprocessor.process(separated_files)
 
 
         # Step 3: Midify conversion
-        self.midify_mod.conv_list(preprocessed_files)
+        self.midify_mod.conv_list(separated_files)
 
     def get_in_out_dirs(self):
         return self.demuc_mod.curr_save_dir, self.midify_mod.curr_save_dir

@@ -16,7 +16,7 @@ class AudioPreProcessorConfig(InstantiateConfig):
 
     # --- Equalizer parameters ---
     freq: int = 8000
-    gain_db: float = 4
+    gain_db: float = 6
     q_factor: float = 2
     
     # --- Expander parameters ---
@@ -26,11 +26,11 @@ class AudioPreProcessorConfig(InstantiateConfig):
     # --- Compressor parameters (for guitar) ---
     compressor_threshold: float = 0.1
     compressor_ratio: float = 3.5
-    compressor_output_gain: float = 1.0
+    compressor_output_gain: float = 1.1
 
     # --- Noise Gate parameters (for guitar) ---
-    gate_threshold: float = 0.01
-    gate_reduction: float = 0.2
+    gate_threshold: float = 0.005
+    gate_reduction: float = 0.0
 
     # --- Track-specific Gain (in dB) ---
     drums_gain_db: float = 0.0
@@ -82,30 +82,34 @@ class AudioPreProcessor:
 
         self.curr_save_dir = None
 
-    # ------------------------------------------------------------------
-    #                       Gain + Limiter
-    # ------------------------------------------------------------------
+    def normalize_audio(self, audio_data: np.ndarray) -> np.ndarray:
+        """
+        Normalizes audio to ensure it stays within the range [-1, 1].
+        """
+        max_amplitude = np.max(np.abs(audio_data))
+        if max_amplitude > 1:
+            audio_data = audio_data / max_amplitude
+        return audio_data
+    
+    def apply_limiter(self, audio_data, limit=1.0):
+        """
+        A very basic limiter that clips samples outside [-limit, limit].
+        """
+        return np.clip(audio_data, -limit, limit)
+
+
     def apply_gain(self, audio_data: np.ndarray, gain_db: float) -> np.ndarray:
         """
-        Apply gain (in dB) to the audio data.
+        Apply gain (in dB) to the audio data and normalize to prevent clipping.
         """
         linear_gain = 10 ** (gain_db / 20.0)
-        return audio_data * linear_gain
+        audio_data = audio_data * linear_gain
+        return audio_data
 
-    def apply_limiter(self, audio_data: np.ndarray, threshold: float = 0.99) -> np.ndarray:
-        """
-        Simple “ceiling” limiter to clamp peaks above `threshold`.
-        """
-        # Example: clamp any sample whose absolute value > threshold
-        limited_audio = np.clip(audio_data, -threshold, threshold)
-        return limited_audio
 
-    # ------------------------------------------------------------------
-    #                       Core Effects
-    # ------------------------------------------------------------------
     def apply_equalizer(self, audio_data, sample_rate):
         """
-        Apply a parametric equalizer to boost the target frequency.
+        Apply a parametric equalizer to boost the target frequency and normalize to prevent clipping.
         """
         b, a = signal.iirpeak(
             self.eq_params['freq'],
@@ -115,13 +119,13 @@ class AudioPreProcessor:
         filtered_audio = signal.lfilter(b, a, audio_data)
         gain_linear = 10 ** (self.eq_params['gain_db'] / 20)
         equalized_audio = filtered_audio * gain_linear
-        # Example: blend the original and the EQ’d signals
         combined_audio = (audio_data + equalized_audio) / 2
         return combined_audio
 
+
     def apply_expander(self, audio_data):
         """
-        Apply a simple expander to restore dynamics.
+        Apply a simple expander to restore dynamics and normalize to prevent clipping.
         """
         threshold = self.expander_params['threshold']
         ratio = self.expander_params['ratio']
@@ -132,12 +136,10 @@ class AudioPreProcessor:
         expanded_audio = np.vectorize(expander)(audio_data)
         return expanded_audio
 
+
     def apply_compressor(self, audio_data):
         """
-        Apply a simple compressor:
-         - threshold (linear amplitude)
-         - ratio
-         - output_gain (multiplicative)
+        Apply a simple compressor and normalize to prevent clipping.
         """
         threshold = self.compressor_params['threshold']
         ratio = self.compressor_params['ratio']
@@ -147,7 +149,6 @@ class AudioPreProcessor:
             amp = abs(x)
             sign = np.sign(x)
             if amp > threshold:
-                # Example: downward compression
                 compressed = threshold + (amp - threshold) / ratio
                 return sign * compressed
             else:
@@ -157,11 +158,10 @@ class AudioPreProcessor:
         compressed_audio *= output_gain
         return compressed_audio
 
+
     def apply_noise_gate(self, audio_data):
         """
-        Apply a simple noise gate:
-         - gate_threshold
-         - reduction (multiplier)
+        Apply a simple noise gate and normalize to prevent clipping.
         """
         gate_threshold = self.noise_gate_params['threshold']
         reduction = self.noise_gate_params['reduction']
@@ -172,23 +172,6 @@ class AudioPreProcessor:
         gated_audio = np.vectorize(gate_sample)(audio_data)
         return gated_audio
 
-    # ------------------------------------------------------------------
-    #                    Bypassed Normalization
-    # ------------------------------------------------------------------
-    def normalize_audio(self, audio_data):
-        """
-        [Currently Bypassed in usage]
-        Normalizes audio to a target RMS or max amplitude.
-        """
-        rms = np.sqrt(np.mean(audio_data ** 2))
-        desired_rms = 0.1  
-        normalization_factor = desired_rms / (rms + 1e-9)
-        normalized_audio = audio_data * normalization_factor
-        # Make sure we still stay in [-1,1]
-        max_amplitude = np.max(np.abs(normalized_audio))
-        if max_amplitude > 1:
-            normalized_audio /= max_amplitude
-        return normalized_audio
 
     # ------------------------------------------------------------------
     #                Processors for Each Instrument
@@ -205,12 +188,12 @@ class AudioPreProcessor:
                 # Do NOT sum to mono; keep as-is
                 # (Assume shape is (num_samples,) for mono or (num_samples, channels) for stereo)
 
+                # 3) Adjust gain
+                audio = self.apply_gain(audio, self.drums_gain_db)
                 # 1) Expander
                 audio = self.apply_expander(audio)
                 # 2) Equalizer
                 audio = self.apply_equalizer(audio, sr)
-                # 3) Adjust gain
-                audio = self.apply_gain(audio, self.drums_gain_db)
                 # 4) Limiter
                 audio = self.apply_limiter(audio)
 
@@ -231,12 +214,12 @@ class AudioPreProcessor:
             if "guitar.wav" in audio_file:
                 audio, sr = sf.read(audio_file)
 
+                # 3) Adjust gain
+                audio = self.apply_gain(audio, self.guitar_gain_db)
                 # 1) Compressor
                 audio = self.apply_compressor(audio)
                 # 2) Noise Gate
-                audio = self.apply_noise_gate(audio)
-                # 3) Adjust gain
-                audio = self.apply_gain(audio, self.guitar_gain_db)
+                # audio = self.apply_noise_gate(audio)
                 # 4) Limiter
                 audio = self.apply_limiter(audio)
 
@@ -257,10 +240,10 @@ class AudioPreProcessor:
             if "bass.wav" in audio_file:
                 audio, sr = sf.read(audio_file)
 
-                # 1) Expander
-                audio = self.apply_expander(audio)
                 # 2) Adjust gain
                 audio = self.apply_gain(audio, self.bass_gain_db)
+                # 1) Expander
+                audio = self.apply_expander(audio)
                 # 3) Limiter
                 audio = self.apply_limiter(audio)
 
@@ -281,10 +264,10 @@ class AudioPreProcessor:
             if "piano.wav" in audio_file:
                 audio, sr = sf.read(audio_file)
 
-                # 1) Expander
-                audio = self.apply_expander(audio)
                 # 2) Adjust gain
                 audio = self.apply_gain(audio, self.piano_gain_db)
+                # 1) Expander
+                audio = self.apply_expander(audio)
                 # 3) Limiter
                 audio = self.apply_limiter(audio)
 
