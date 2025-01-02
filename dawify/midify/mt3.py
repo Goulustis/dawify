@@ -41,7 +41,7 @@ class MT3_Mod:
         
         file_name = osp.splitext(osp.basename(inp_f))[0]
         pr_name = "/".join(inp_f.split("/")[-2:])
-        rprint(f"[yellow]{pr_name} midified to {osp.join(out_dir, file_name)}.mid [/yellow]")
+        rprint(f"[yellow]{pr_name} midified to {osp.join(out_dir, file_name)}.mid using {self.config.model_name}, prec:{self.config.precision} [/yellow]")
 
         midi_file = process_audio(self.model, inp_f, out_dir)
 
@@ -58,14 +58,14 @@ class MT3_Mod:
                 self.config.model_name = "YMT3+"
             elif "guitar.wav" in inp_f:
                 self.config.model_name = "YMT3+"
-                self.config.precision = "16"
+                # self.config.precision = "16"
             elif "bass.wav" in inp_f:
                 self.config.model_name = "YPTF+Single (noPS)"
             elif "vocals.wav" in inp_f:
                 self.config.model_name = "YPTF+Single (noPS)"
             elif "piano.wav" in inp_f:
                 self.config.model_name = "YMT3+"
-                self.config.precision = "16"
+                # self.config.precision = "16"
             elif "other.wav" in inp_f:
                 self.config.model_name = "YPTF.MoE+Multi (PS)"
             else:

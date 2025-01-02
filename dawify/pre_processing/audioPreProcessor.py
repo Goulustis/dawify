@@ -171,6 +171,16 @@ class AudioPreProcessor:
 
         gated_audio = np.vectorize(gate_sample)(audio_data)
         return gated_audio
+    
+    def apply_low_cut_filter(self, audio_data, sample_rate, cutoff=250.0):
+        """
+        Apply a low-cut (high-pass) filter to remove frequencies below the cutoff.
+        """
+        nyquist = 0.5 * sample_rate
+        normal_cutoff = cutoff / nyquist
+        b, a = signal.butter(2, normal_cutoff, btype='high', analog=False)
+        filtered_audio = signal.lfilter(b, a, audio_data)
+        return filtered_audio
 
 
     # ------------------------------------------------------------------
@@ -206,7 +216,7 @@ class AudioPreProcessor:
 
     def process_guitar_files(self, separated_files):
         """
-        Guitar chain: compressor -> noise gate -> gain -> limiter
+        Guitar chain: low-cut filter -> compressor -> noise gate -> gain -> limiter
         (No normalization)
         """
         processed_files = []
@@ -214,12 +224,12 @@ class AudioPreProcessor:
             if "guitar.wav" in audio_file:
                 audio, sr = sf.read(audio_file)
 
+                # 1) Low-Cut Filter
+                audio = self.apply_low_cut_filter(audio, sr)
+                # 2) Compressor
+                audio = self.apply_compressor(audio)
                 # 3) Adjust gain
                 audio = self.apply_gain(audio, self.guitar_gain_db)
-                # 1) Compressor
-                audio = self.apply_compressor(audio)
-                # 2) Noise Gate
-                # audio = self.apply_noise_gate(audio)
                 # 4) Limiter
                 audio = self.apply_limiter(audio)
 
@@ -256,7 +266,7 @@ class AudioPreProcessor:
 
     def process_piano_files(self, separated_files):
         """
-        Piano chain: expander -> gain -> limiter
+        Piano chain: low-cut filter -> expander -> gain -> limiter
         (No normalization)
         """
         processed_files = []
@@ -264,11 +274,13 @@ class AudioPreProcessor:
             if "piano.wav" in audio_file:
                 audio, sr = sf.read(audio_file)
 
-                # 2) Adjust gain
-                audio = self.apply_gain(audio, self.piano_gain_db)
-                # 1) Expander
+                # 1) Low-Cut Filter
+                audio = self.apply_low_cut_filter(audio, sr)
+                # 2) Expander
                 audio = self.apply_expander(audio)
-                # 3) Limiter
+                # 3) Adjust gain
+                audio = self.apply_gain(audio, self.piano_gain_db)
+                # 4) Limiter
                 audio = self.apply_limiter(audio)
 
                 output_file = audio_file.replace(".wav", "_processed.wav")
