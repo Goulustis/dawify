@@ -503,8 +503,3 @@ def process_audio(model, audio_filepath, out_dir="outputs/mt3"):
     return midifile
     # midifile = to_data_url(midifile)
     # return create_html_from_midi(midifile) # html midiplayer
-
-
-if __name__ == "__main__":
-    mod = load_model()
-    assert 0
