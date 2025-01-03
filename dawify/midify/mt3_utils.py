@@ -5,7 +5,7 @@ mt3_dir = osp.abspath(osp.join(osp.dirname(__file__), '..', 'third_party', 'amt'
 if mt3_dir not in sys.path:
     sys.path.insert(0, mt3_dir) 
 
-from dawify.third_party.amt.src.model.init_train import initialize_trainer, update_config
+from dawify.third_party.amt.src.model.init_train import update_config
 
 
 from collections import Counter
