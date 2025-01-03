@@ -131,7 +131,7 @@ MODEL_PATH = {
     "apollo_uni": osp.join(apollo_dir, "model", "apollo_model_uni.ckpt"),
     # Lew Vocal Enhancer v2(beta)
     "apollo_v2" : osp.join(apollo_dir, "model", "apollo_model_v2.ckpt"),
-    # mp3 enhancer
+    # Lew Vocal Enhancer
     "apollo" : osp.join(apollo_dir, "model", "apollo_model.ckpt"),
     # MP3 Enhancer
     "pytorch" : osp.join(apollo_dir, "model", "pytorch_model.bin")
