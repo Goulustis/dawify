@@ -14,7 +14,7 @@ avail_models = ", ".join(list(MODEL_PATH.keys()))
 class ApolloConfig(InstantiateConfig):
     _target: Type = field(default_factory=lambda: Apollo)
 
-    model_name:str = "apollo"
+    model_name:str = "pytorch"
     f"""available models: {avail_models}"""
 
     chunk_size:int = 10
