@@ -6,6 +6,7 @@ import soundfile as sf
 from typing import Type
 import glob
 import os.path as osp
+import os
 
 from dawify.dw_config import InstantiateConfig
 from dataclasses import dataclass, field
@@ -16,7 +17,7 @@ class AudioPreProcessorConfig(InstantiateConfig):
 
     # --- Equalizer parameters ---
     freq: int = 8000
-    gain_db: float = 6
+    gain_db: float = 0.0
     q_factor: float = 2
     
     # --- Expander parameters ---
@@ -30,7 +31,7 @@ class AudioPreProcessorConfig(InstantiateConfig):
 
     # --- Noise Gate parameters (for guitar) ---
     gate_threshold: float = 0.005
-    gate_reduction: float = 0.0
+    gate_reduction: float = 0.4
 
     # --- Track-specific Gain (in dB) ---
     drums_gain_db: float = 0.0
@@ -80,7 +81,9 @@ class AudioPreProcessor:
         self.bass_gain_db   = config.bass_gain_db
         self.piano_gain_db  = config.piano_gain_db
 
-        self.curr_save_dir = None
+        self.out_dir = "outputs/preprocessed"
+
+        os.makedirs(self.out_dir, exist_ok=True)
 
     def normalize_audio(self, audio_data: np.ndarray) -> np.ndarray:
         """
@@ -172,7 +175,7 @@ class AudioPreProcessor:
         gated_audio = np.vectorize(gate_sample)(audio_data)
         return gated_audio
     
-    def apply_low_cut_filter(self, audio_data, sample_rate, cutoff=250.0):
+    def apply_low_cut_filter(self, audio_data, sample_rate, cutoff=500.0):
         """
         Apply a low-cut (high-pass) filter to remove frequencies below the cutoff.
         """
@@ -207,7 +210,7 @@ class AudioPreProcessor:
                 # 4) Limiter
                 audio = self.apply_limiter(audio)
 
-                output_file = audio_file.replace(".wav", "_processed.wav")
+                output_file = osp.join(self.curr_save_dir, osp.basename(audio_file))
                 sf.write(output_file, audio, sr)
                 processed_files.append(output_file)
             else:
@@ -227,13 +230,13 @@ class AudioPreProcessor:
                 # 1) Low-Cut Filter
                 audio = self.apply_low_cut_filter(audio, sr)
                 # 2) Compressor
-                audio = self.apply_compressor(audio)
+                # audio = self.apply_compressor(audio)
                 # 3) Adjust gain
                 audio = self.apply_gain(audio, self.guitar_gain_db)
                 # 4) Limiter
                 audio = self.apply_limiter(audio)
 
-                output_file = audio_file.replace(".wav", "_processed.wav")
+                output_file = osp.join(self.curr_save_dir, osp.basename(audio_file))
                 sf.write(output_file, audio, sr)
                 processed_files.append(output_file)
             else:
@@ -257,7 +260,7 @@ class AudioPreProcessor:
                 # 3) Limiter
                 audio = self.apply_limiter(audio)
 
-                output_file = audio_file.replace(".wav", "_processed.wav")
+                output_file = osp.join(self.curr_save_dir, osp.basename(audio_file))
                 sf.write(output_file, audio, sr)
                 processed_files.append(output_file)
             else:
@@ -283,7 +286,7 @@ class AudioPreProcessor:
                 # 4) Limiter
                 audio = self.apply_limiter(audio)
 
-                output_file = audio_file.replace(".wav", "_processed.wav")
+                output_file = osp.join(self.curr_save_dir, osp.basename(audio_file))
                 sf.write(output_file, audio, sr)
                 processed_files.append(output_file)
             else:
@@ -298,6 +301,10 @@ class AudioPreProcessor:
         Example logic to route each separated file to the correct 
         instrument chain. Bypasses normalization.
         """
+
+        self.curr_save_dir = osp.join(self.out_dir, osp.basename(osp.dirname(separated_files[0])))
+        os.makedirs(self.curr_save_dir, exist_ok=True)
+
         final_processed = []
         for fpath in separated_files:
             if "drums.wav" in fpath:
