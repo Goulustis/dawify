@@ -58,14 +58,12 @@ class MT3_Mod:
                 self.config.model_name = "YMT3+"
             elif "guitar.wav" in inp_f:
                 self.config.model_name = "YMT3+"
-                # self.config.precision = "16"
             elif "bass.wav" in inp_f:
                 self.config.model_name = "YPTF+Single (noPS)"
             elif "vocals.wav" in inp_f:
                 self.config.model_name = "YPTF+Single (noPS)"
             elif "piano.wav" in inp_f:
                 self.config.model_name = "YMT3+"
-                # self.config.precision = "16"
             elif "other.wav" in inp_f:
                 self.config.model_name = "YPTF.MoE+Multi (PS)"
             else:
