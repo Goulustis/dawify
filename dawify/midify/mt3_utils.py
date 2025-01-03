@@ -5,9 +5,6 @@ mt3_dir = osp.abspath(osp.join(osp.dirname(__file__), '..', 'third_party', 'amt'
 if mt3_dir not in sys.path:
     sys.path.insert(0, mt3_dir) 
 
-from dawify.third_party.amt.src.model.init_train import update_config
-
-
 from collections import Counter
 import argparse
 import torch
@@ -506,3 +503,8 @@ def process_audio(model, audio_filepath, out_dir="outputs/mt3"):
     return midifile
     # midifile = to_data_url(midifile)
     # return create_html_from_midi(midifile) # html midiplayer
+
+
+if __name__ == "__main__":
+    mod = load_model()
+    assert 0
