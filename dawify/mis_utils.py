@@ -18,7 +18,7 @@ def rprint(inp_str:str, print_trace:bool=True):
     CONSOLE.print(inp_str)
 
 def print_metrics(metrics: dict, header: tuple = ("Metric", "Value")):
-    table = Table(title="Backtest Metrics")
+    table = Table(title="Metrics")
 
     table.add_column(header[0], justify="right", style="cyan", no_wrap=True)
     table.add_column(header[1], style="magenta")
