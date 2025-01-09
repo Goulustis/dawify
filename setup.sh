@@ -35,3 +35,10 @@ wget 'https://github.com/deton24/Lew-s-vocal-enhancer-for-Apollo-by-JusperLee/re
 cd "$APOLLO_INSTALL_DIR"
 rm  inference.py
 wget 'https://raw.githubusercontent.com/jarredou/Apollo-Colab-Inference/main/inference.py'
+
+
+################################################################################
+# Install dependencies for post processing
+################################################################################
+cd "$ROOT_DIR"
+pip install -r requirements.post.txt
