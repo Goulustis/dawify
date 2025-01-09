@@ -42,11 +42,11 @@ def calc_metric(gt_midi:str, pred_midi:str, model:str):
     return dic
 
 if __name__ == "__main__":
-    inp_f = "./assets/sample_level1_audio/sample_level1_audio/sample_level1_drum.mid"
+    inp_f = "./assets/sample_level1_audio/sample_level1_audio/sample_level1_piano.mid"
     # pred_f = "./assets/sample_level1_audio/sample_level1_audio/sample_level1_drum.mid"
-    pred_f = "./outputs/mt3/sample_level1/drums_processed.mid"
+    pred_f = "./outputs/mt3/sample_level1/piano.mid"
     model = "YMT3+"
     metrics = calc_metric(inp_f, pred_f, model)
     rprint("[green]Metrics are in [0-1][/green]", False)
     print_metrics(metrics)
-    assert 0
+    # assert 0

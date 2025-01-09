@@ -34,21 +34,21 @@ class Pipeline:
     def process(self, inp_f: str):
         """
         inp_f (str): path to mp3 file
-        """
+    """
         # Step 1: Demuc separation
         self.demuc_mod.seperate(inp_f)
         separated_files = self.demuc_mod.get_out_fs()
 
         # setp 1.5: Enhance separated files
-        # self.enhancer.enhance_list(separated_files)
-        # separated_files = self.enhancer.get_out_fs()
+        self.enhancer.enhance_list(separated_files)
+        separated_files = self.enhancer.get_out_fs()
 
         # Step 2: Process all splited audio through AudioPreProcessor
-        # preprocessed_files = self.audio_preprocessor.process(separated_files)
+        preprocessed_files = self.audio_preprocessor.process(separated_files)
 
 
         # Step 3: Midify conversion
-        self.midify_mod.conv_list(separated_files)
+        self.midify_mod.conv_list(preprocessed_files)
 
     def get_in_out_dirs(self):
         return self.demuc_mod.curr_save_dir, self.midify_mod.curr_save_dir

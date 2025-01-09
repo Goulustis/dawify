@@ -3,6 +3,7 @@ outputs/*
 dawify.egg-info/*
 dawify/third_party/*
 *.wav
+dawify/wandb/*
 .vscode/*
 
 # Byte-compiled / optimized / DLL files

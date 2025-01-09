@@ -2,7 +2,7 @@ import tyro
 
 from dawify.pipeline.pipeline import PipelineConfig, Pipeline
 from dawify.midify.mt3 import MT3Config
-from dawify.dw_metrics import calc_and_print_snrs
+# from dawify.dw_metrics import calc_and_print_snrs
 
 def main_cli(config:PipelineConfig, inp_f:str):
     config = PipelineConfig(
