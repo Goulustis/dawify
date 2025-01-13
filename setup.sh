@@ -49,4 +49,4 @@ fi
 # Install dependencies for post processing
 ################################################################################
 cd "$ROOT_DIR"
-pip install -r requirements.post.txt
+pip install -U -r requirements.post.txt
