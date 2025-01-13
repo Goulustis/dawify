@@ -3,15 +3,17 @@
 set -e
 
 ROOT_DIR=$(pwd)
+echo "ROOT_DIR: $ROOT_DIR"
 
-# # install MT3+; DO NOT CHANGE INSTALL_DIR!!
-# echo "Installing MT3+"
-# INSTALL_DIR="dawify/third_party/amt"
-# mkdir -p "$INSTALL_DIR"
-
-# aws s3 cp s3://amt-deploy-public/amt/ "$INSTALL_DIR" --no-sign-request --recursive
-# cd "$INSTALL_DIR/src"
-# python -m pip install -r requirements.txt
+# install MT3+
+echo "Installing MT3+"
+INSTALL_DIR="$ROOT_DIR/dawify/third_party/amt"
+if [ ! -d "$INSTALL_DIR" ]; then
+    mkdir -p "$INSTALL_DIR"
+    aws s3 cp s3://amt-deploy-public/amt/ "$INSTALL_DIR" --no-sign-request --recursive
+    cd "$INSTALL_DIR/src"
+    python -m pip install -r requirements.txt
+fi
 
 # # install pytorch; demucs and mt3 could break pytorch versions
 # conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
