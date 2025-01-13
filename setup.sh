@@ -20,8 +20,9 @@ fi
 
 # install Apollo
 echo "Installing Apollo"
-APOLLO_INSTALL_DIR="dawify/third_party/Apollo"
-APOLLO_INSTALL_DIR=$(realpath "$APOLLO_INSTALL_DIR")
+APOLLO_INSTALL_DIR="$ROOT_DIR/dawify/third_party/Apollo"
+if [ ! -d "$APOLLO_INSTALL_DIR" ]; then
+    mkdir -p "$APOLLO_INSTALL_DIR"
 git clone https://github.com/JusperLee/Apollo.git "$APOLLO_INSTALL_DIR"
 cd "$APOLLO_INSTALL_DIR"
 
@@ -39,7 +40,7 @@ wget 'https://github.com/deton24/Lew-s-vocal-enhancer-for-Apollo-by-JusperLee/re
 cd "$APOLLO_INSTALL_DIR"
 rm  inference.py
 wget 'https://raw.githubusercontent.com/jarredou/Apollo-Colab-Inference/main/inference.py'
-
+fi
 
 ################################################################################
 # Install dependencies for post processing
