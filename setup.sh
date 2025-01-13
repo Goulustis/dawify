@@ -26,12 +26,15 @@ if [ ! -d "$APOLLO_INSTALL_DIR" ]; then
 git clone https://github.com/JusperLee/Apollo.git "$APOLLO_INSTALL_DIR"
 cd "$APOLLO_INSTALL_DIR"
 
-mkdir model
-cd model
-wget 'https://huggingface.co/JusperLee/Apollo/resolve/main/pytorch_model.bin'
-wget 'https://huggingface.co/jarredou/lew_apollo_vocal_enhancer/resolve/main/apollo_model.ckpt'
-wget 'https://huggingface.co/jarredou/lew_apollo_vocal_enhancer/resolve/main/apollo_model_v2.ckpt'
-wget 'https://github.com/deton24/Lew-s-vocal-enhancer-for-Apollo-by-JusperLee/releases/download/uni/apollo_model_uni.ckpt'
+    echo "Downloading Apollo models"
+    APOLLO_MODEL_DIR="$APOLLO_INSTALL_DIR/model"
+    mkdir -p "$APOLLO_MODEL_DIR"
+
+    cd "$APOLLO_MODEL_DIR"
+    wget 'https://huggingface.co/JusperLee/Apollo/resolve/main/pytorch_model.bin'
+    wget 'https://huggingface.co/jarredou/lew_apollo_vocal_enhancer/resolve/main/apollo_model.ckpt'
+    wget 'https://huggingface.co/jarredou/lew_apollo_vocal_enhancer/resolve/main/apollo_model_v2.ckpt'
+    wget 'https://github.com/deton24/Lew-s-vocal-enhancer-for-Apollo-by-JusperLee/releases/download/uni/apollo_model_uni.ckpt'
 
 cd "$APOLLO_INSTALL_DIR/configs"
 wget 'https://huggingface.co/jarredou/lew_apollo_vocal_enhancer/resolve/main/config_apollo_vocal.yaml'
