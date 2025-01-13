@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 ROOT_DIR=$(pwd)
 
 # # install MT3+; DO NOT CHANGE INSTALL_DIR!!
