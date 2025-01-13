@@ -10,7 +10,7 @@ echo "Installing MT3+"
 INSTALL_DIR="$ROOT_DIR/dawify/third_party/amt"
 if [ ! -d "$INSTALL_DIR" ]; then
     mkdir -p "$INSTALL_DIR"
-    aws s3 cp s3://amt-deploy-public/amt/ "$INSTALL_DIR" --no-sign-request --recursive
+    git clone git@github.com:kaiyolau/amt.git "$INSTALL_DIR"
 else
     echo "MT3+ already installed"
 fi
