@@ -1,11 +1,16 @@
+[build-system]
+requires = ["setuptools>=62.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "dawify" 
-version = "0.1"   
+name = "dawify"
+version = "0.1"
 dependencies = [
-    "demucs",
+    "demucs==4.0.1",
     "tyro",
     "awscli",
-    "ml_collections"
+    "ml_collections",
+    "pytorch_lightning==2.5.0",
 ]
 
 [tool.setuptools.packages.find]

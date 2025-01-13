@@ -12,6 +12,7 @@ from dawify.third_party.amt.src.utils.metrics import compute_track_metrics
 from dawify.midify.mt3 import MT3Config
 from dawify.mis_utils import rprint, print_metrics
 
+
 def calc_metric(gt_midi:str, pred_midi:str, model:str):
     config = MT3Config(model_name=model)
     model = config.setup().model
@@ -41,12 +42,16 @@ def calc_metric(gt_midi:str, pred_midi:str, model:str):
 
     return dic
 
+
 if __name__ == "__main__":
-    inp_f = "./assets/sample_level1_audio/sample_level1_audio/sample_level1_piano.mid"
-    # pred_f = "./assets/sample_level1_audio/sample_level1_audio/sample_level1_drum.mid"
-    pred_f = "./outputs/mt3/sample_level1/piano.mid"
-    model = "YMT3+"
-    metrics = calc_metric(inp_f, pred_f, model)
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--gt", type=str, required=True)
+    parser.add_argument("--pred", type=str, required=True)
+    parser.add_argument("--model", type=str, default="YMT3+")
+    args = parser.parse_args()
+
+    metrics = calc_metric(args.gt, args.pred, args.model)
     rprint("[green]Metrics are in [0-1][/green]", False)
     print_metrics(metrics)
-    # assert 0
