@@ -11,9 +11,11 @@ INSTALL_DIR="$ROOT_DIR/dawify/third_party/amt"
 if [ ! -d "$INSTALL_DIR" ]; then
     mkdir -p "$INSTALL_DIR"
     aws s3 cp s3://amt-deploy-public/amt/ "$INSTALL_DIR" --no-sign-request --recursive
-    cd "$INSTALL_DIR/src"
-    python -m pip install -r requirements.txt
+else
+    echo "MT3+ already installed"
 fi
+cd "$INSTALL_DIR/src"
+pip install -r requirements.txt
 
 # # install pytorch; demucs and mt3 could break pytorch versions
 # conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
@@ -43,6 +45,8 @@ if [ ! -d "$APOLLO_INSTALL_DIR" ]; then
     cd "$APOLLO_INSTALL_DIR"
     rm  inference.py
     wget 'https://raw.githubusercontent.com/jarredou/Apollo-Colab-Inference/main/inference.py'
+else
+    echo "Apollo already installed"
 fi
 
 ################################################################################

@@ -9,7 +9,8 @@ dependencies = [
     "demucs==4.0.1",
     "tyro",
     "awscli",
-    "ml_collections"
+    "ml_collections",
+    "pytorch_lightning==2.5.0",
 ]
 
 [tool.setuptools.packages.find]

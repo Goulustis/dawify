@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  dawify:
+    build: .
+    volumes:
+      - .:/app
+      - ../users:/users
+    working_dir: /app
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: python -c "import torch; import torchaudio; from dawify.run import main_cli"
