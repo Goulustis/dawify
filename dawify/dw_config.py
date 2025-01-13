@@ -34,12 +34,13 @@ class InstantiateConfig(PrintableConfig):
     def setup(self, **kwargs) -> Any:
         """Returns the instantiated object using the config."""
         return self._target(self, **kwargs)
-    
+
     def save_config(self, filename: str) -> None:
         """Save the config to a YAML file."""
         with open(filename, 'w') as f:
             yaml.dump(self, f)
         rprint(f"[yellow]config saved to: {filename}[/yellow]")
+
 
 def load_config(filename: str, inp_conf = None) -> InstantiateConfig:
     """load and overwrite config from file"""

@@ -13,7 +13,7 @@ import os
 from typing import Tuple, Literal, Dict
 
 from copy import deepcopy
-import argparse
+from loguru import logger
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import ModelCheckpoint
@@ -492,13 +492,15 @@ def prepare_media(source_path_or_url: os.PathLike) -> Dict:
         "num_frames": int(info.num_frames),
         "duration": int(info.num_frames / info.sample_rate),
         "encoding": str.lower(info.encoding),
-        }
+    }
 
 
 def process_audio(model, audio_filepath, out_dir="outputs/mt3"):
     if audio_filepath is None:
+        logger.warning("audio_filepath is None")
         return None
     audio_info = prepare_media(audio_filepath)
+    logger.debug(audio_info)
     midifile = transcribe(model, audio_info, out_dir)
     return midifile
     # midifile = to_data_url(midifile)

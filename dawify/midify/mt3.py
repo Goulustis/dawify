@@ -4,9 +4,11 @@ import torch
 import os
 import os.path as osp
 
+from loguru import logger
+
 from dawify.dw_config import InstantiateConfig
 from dawify.midify.mt3_utils import load_model, process_audio
-from dawify.mis_utils import rprint
+
 
 @dataclass
 class MT3Config(InstantiateConfig):
@@ -20,6 +22,7 @@ class MT3Config(InstantiateConfig):
     precision: Literal["32", "bf16-mixed", "16"] = "16"
     """precision of the model"""
 
+
 class MT3_Mod:
     def __init__(self, config: MT3Config):
         self.config = config
@@ -28,7 +31,7 @@ class MT3_Mod:
         self.curr_save_dir = None
 
         os.makedirs(self.out_dir, exist_ok=True)
-    
+
     @torch.no_grad()
     def convert(self, inp_f: str):
         """
@@ -41,13 +44,13 @@ class MT3_Mod:
         
         file_name = osp.splitext(osp.basename(inp_f))[0]
         pr_name = "/".join(inp_f.split("/")[-2:])
-        rprint(f"[yellow]{pr_name} midified to {osp.join(out_dir, file_name)}.mid using {self.config.model_name}, prec:{self.config.precision} [/yellow]")
+        logger.info(f"{pr_name} midified to {osp.join(out_dir, file_name)}.mid using {self.config.model_name}, prec:{self.config.precision}")
 
         midi_file = process_audio(self.model, inp_f, out_dir)
 
-        print(midi_file + " is using model: " + str(self.config.model_name) + " with precision: " + str(self.config.precision))
+        logger.info(f"{midi_file} is using model: {self.config.model_name} with precision: {self.config.precision}")
         return midi_file
-    
+
     def conv_list(self, inp_fs: List[str]):
         """
         inp_fs (List[str]): list of either mp3 or wav files
@@ -71,8 +74,16 @@ class MT3_Mod:
 
             # del self.model
             # torch.cuda.empty_cache()
+            logger.debug(f"File: {inp_f} | Model: {self.config.model_name} | Precision: {self.config.precision}")
             self.model = load_model(self.config.model_name, self.config.precision)
-            midi_files.append(self.convert(inp_f))
-        
+            try:
+                converted_result = self.convert(inp_f)
+                midi_files.append(converted_result)
+            except Exception as e:
+                logger.error(f"Error converting {inp_f}: {e}")
+
+        if len(midi_files) == 0:
+            raise Exception("No midi files generated")
+
         self.curr_save_dir = osp.dirname(midi_files[0])
         return midi_files

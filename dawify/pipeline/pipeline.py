@@ -4,6 +4,8 @@ import tyro
 from dataclasses import dataclass, field
 from typing import Type
 
+from loguru import logger
+
 from dawify.dw_config import InstantiateConfig
 from dawify.track_split.demuc_mod import DemucModConfig, DemucMod
 from dawify.midify.mt3 import MT3Config, MT3_Mod
@@ -36,18 +38,21 @@ class Pipeline:
         inp_f (str): path to mp3 file
         """
         # Step 1: Demuc separation
+        logger.info(f"Demuc separation for {inp_f}")
         self.demuc_mod.seperate(inp_f)
         separated_files = self.demuc_mod.get_out_fs()
 
         # setp 1.5: Enhance separated files
+        logger.info("Enhance separated files")
         # self.enhancer.enhance_list(separated_files)
         # separated_files = self.enhancer.get_out_fs()
 
         # Step 2: Process all splited audio through AudioPreProcessor
+        logger.info("Process all splited audio through AudioPreProcessor")
         # preprocessed_files = self.audio_preprocessor.process(separated_files)
 
-
         # Step 3: Midify conversion
+        logger.info("Midify conversion")
         self.midify_mod.conv_list(separated_files)
 
     def get_in_out_dirs(self):
