@@ -11,3 +11,6 @@ mido==1.3.3
 
 # Logging
 loguru==0.7.3
+
+# Downgrade transformers for YMT3+
+transformers==4.45.1
