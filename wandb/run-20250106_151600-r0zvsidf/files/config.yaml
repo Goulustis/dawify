@@ -1,0 +1,144 @@
+_wandb:
+    value:
+        cli_version: 0.19.1
+        m: []
+        python_version: 3.9.19
+        t:
+            "1":
+                - 1
+                - 5
+                - 9
+                - 11
+                - 49
+                - 53
+                - 55
+                - 71
+                - 103
+            "2":
+                - 1
+                - 5
+                - 9
+                - 11
+                - 49
+                - 53
+                - 55
+                - 71
+                - 103
+            "3":
+                - 23
+                - 55
+            "4": 3.9.19
+            "5": 0.19.1
+            "6": 4.45.1
+            "8":
+                - 5
+            "12": 0.19.1
+            "13": linux-x86_64
+attention_to_channel:
+    value: null
+audio_codec:
+    value: null
+base_name:
+    value: google/t5-v1_1-xxl
+conv_out_channels:
+    value: null
+d_feat:
+    value: null
+d_latent:
+    value: null
+debug_mode:
+    value: false
+decoder_ff_layer_type:
+    value: null
+decoder_ff_widening_factor:
+    value: null
+decoder_position_encoding_type:
+    value: default
+decoder_type:
+    value: null
+encoder_position_encoding_type:
+    value: default
+encoder_type:
+    value: null
+epochs:
+    value: null
+eval_drum_vocab:
+    value: null
+eval_program_vocab:
+    value: null
+eval_subtask_key:
+    value: default
+event_length:
+    value: null
+exp_id:
+    value: notask_all_cross_v6_xk2_amp0811_gm_ext_plus_nops_b72
+ff_layer_type:
+    value: null
+ff_widening_factor:
+    value: null
+hidden_act:
+    value: null
+hop_length:
+    value: null
+input_frames:
+    value: null
+layer_norm_type:
+    value: null
+moe_num_experts:
+    value: null
+moe_topk:
+    value: null
+n_mels:
+    value: null
+num_gpus:
+    value: auto
+num_latents:
+    value: null
+num_nodes:
+    value: 1
+num_perceiver_tf_blocks:
+    value: null
+num_perceiver_tf_local_transformers_per_block:
+    value: null
+num_perceiver_tf_temporal_transformers_per_block:
+    value: null
+onset_tolerance:
+    value: 0.05
+perceiver_tf_d_model:
+    value: null
+pre_decoder_type:
+    value: default
+pre_encoder_type:
+    value: default
+precision:
+    value: "16"
+pretrained:
+    value: false
+project:
+    value: "2024"
+rope_apply_to_keys:
+    value: null
+rope_partial_pe:
+    value: null
+rotary_type:
+    value: null
+sca_use_query_residual:
+    value: null
+strategy:
+    value: auto
+task:
+    value: mt3_full_plus
+task_cond_decoder:
+    value: true
+task_cond_encoder:
+    value: true
+test_octave_shift:
+    value: false
+test_pitch_shift:
+    value: null
+tie_word_embedding:
+    value: null
+wandb_mode:
+    value: disabled
+write_model_output:
+    value: true

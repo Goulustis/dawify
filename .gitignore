@@ -3,7 +3,10 @@ outputs/*
 dawify.egg-info/*
 dawify/third_party/*
 *.wav
+dawify/wandb/*
 .vscode/*
+.16/*
+.wandb/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
