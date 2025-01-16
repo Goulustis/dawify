@@ -1,5 +1,12 @@
 
 # pipeline.py
+
+# Add this import at the top of the file
+import logging
+
+# Add this after the imports but before the classes
+logger = logging.getLogger(__name__)
+
 import tyro
 from dataclasses import dataclass, field
 from typing import Type

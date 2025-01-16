@@ -1,4 +1,11 @@
 import tyro
+import logging
+
+# Configure logging at the start of your program
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 
 from dawify.pipeline.pipeline import PipelineConfig, Pipeline
 from dawify.midify.mt3 import MT3Config
